@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/file-input.css') }}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <script type="application/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='js/file-input.js') }}"></script>
+</head>
+<body class="d-flex flex-column">
+<header class="bg-dark shadow p-3 fs-1 fw-bold text-center text-white">
+    Traffic Sign Recognition using CNN
+</header>
+<main class="container-fluid flex-grow-1">
+    <div class="row justify-content-center py-3">
+        <div class="col-lg-6">
+            {% if image is defined %}
+                <img class="img-fluid mx-auto d-block" src="data:image/png;base64,{{ image }}" alt="">
+            {% else %}
+                <form method="post" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    <div class="text-center">
+                        {% for error in form.image.errors %}
+                            <span class="text-danger fs-3 fw-bold">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="py-3">
+                        <div class="image-upload-wrap">
+                            {{ form.image(class="file-upload-input", onchange="readURL(this);", accept="image/*") }}
+                            <div class="drag-text">
+                                <h3>Drag and drop an Image</h3>
+                            </div>
+                        </div>
+                        <div class="file-upload-content">
+                            <img class="file-upload-image" src="#" alt="your image"/>
+                            <div class="image-title-wrap">
+                                <input type="button" id="remove-image" class="remove-image text-white"
+                                       value="Remove Uploaded Image"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        {{ form.submit(class="btn btn-dark fw-bold") }}
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    {% if text is defined %}
+        {% for a in text %}
+            <div class="row">
+                <div class="fs-3 fw-bold text-center">
+                   This is {{ a }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if plot is defined %}
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <img class="img-fluid mx-auto d-block" src="data:image/png;base64,{{ plot }}" alt="">
+            </div>
+        </div>
+    {% endif %}
+    {% if previews is defined %}
+        <div class="row justify-content-center pb-3">
+            <div class="col-lg-6">
+                <img class="img-fluid mx-auto d-block" src="data:image/png;base64,{{ previews }}" alt="">
+            </div>
+        </div>
+    {% endif %}
+    {% if text is defined %}
+    <div class="row pb-3">
+        <div class="text-center">
+            <a href="{{ url_for('main_controller.upload') }}">
+                <button class="btn btn-dark fw-bold w-auto">Try again</button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+<footer class="bg-dark text-white text-center fs-6 fw-bold p-3">© 2021 - Skrynnik Yehor</footer>
+</body>
+</html>
